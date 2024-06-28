@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import errorHandlerMiddleware from './middleware/error';
 import authRouter from './routes/auth.route';
+import userRouter from './routes/user.route';
 import ErrorHandler from './utils/errorHandler.utils';
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(morgan('dev'));
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 app.use('/api/auth', authRouter);
+app.use('/api/users', userRouter);
 
 app.get('/healthcheck', (req: Request, res: Response) => res.sendStatus(200));
 

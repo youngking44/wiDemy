@@ -2,6 +2,7 @@ import User from '../models/user.model';
 import { CreateUserType } from '../schema/user.schema';
 import comparePasswords from '../utils/comparePasswords.utils';
 import ErrorHandler from '../utils/errorHandler.utils';
+import { redis } from '../utils/redis.utils';
 
 export const createUser = async (input: CreateUserType) => {
   const user = await User.findOne({ email: input.email });
@@ -27,13 +28,16 @@ export const loginUser = async (input: ILogin) => {
 
   const isMatch = await comparePasswords({
     inputPassword: input.password,
-    userPassword: user.password,
+    userPassword: user?.password || '',
   });
 
   if (!isMatch) {
     const error = new ErrorHandler('Invalid email or password', 401);
     throw error;
   }
+
+  //Sending User Session To Redis
+  await redis.set(user._id.toHexString(), JSON.stringify(user));
 
   return user;
 };
@@ -43,5 +47,20 @@ export const logoutUser = async (id: string) => {
 
   if (!user) {
     throw new ErrorHandler('User ID does not exist', 404);
+  }
+
+  await redis.del(user._id.toHexString());
+};
+
+export const socialAuth = async (input: CreateUserType) => {
+  const user = await User.findOne({ email: input.email });
+
+  if (user) {
+    await redis.set(user._id.toHexString(), JSON.stringify(user));
+    return { user, message: 'social-auth-login' };
+  } else {
+    const newUser = await User.create(input);
+    await redis.set(newUser._id.toHexString(), JSON.stringify(newUser));
+    return { user: newUser, message: 'social-auth-register' };
   }
 };

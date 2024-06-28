@@ -6,7 +6,7 @@ const UserSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, trim: true },
-    password: { type: String, required: true, trim: true },
+    password: { type: String, minlength: [6, 'Password must be at least six (6) characters'] },
     avatar: { public_id: String, url: String },
     role: { type: String, default: 'user' },
     token: { type: String, default: '' },
@@ -27,6 +27,8 @@ UserSchema.pre('save', async function (next) {
   if (!user.isModified('password')) {
     return next();
   }
+
+  if (!user.password) return;
 
   const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'));
   const hashedPassword = await bcrypt.hash(user.password, salt);

@@ -35,3 +35,15 @@ export const loginUserSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Not a valid email'),
   password: z.string().min(6, 'Password length must be greater than 6'),
 });
+
+export const socialAuthSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().min(1, 'Email is required').email('Not a valid email'),
+  avatar: z
+    .object({
+      public_id: z.string().optional().nullable(),
+      url: z.string().optional().nullable(),
+    })
+    .optional()
+    .nullable(),
+});

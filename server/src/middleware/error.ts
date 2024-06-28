@@ -17,6 +17,11 @@ const errorHandlerMiddleware = (error: any, req: Request, res: Response, next: N
     error = new ErrorHandler(message, 400);
   }
 
+  if (error.message.includes('1100')) {
+    const message = `Email is not available, use another email.`;
+    error = new ErrorHandler(message, 400);
+  }
+
   //Wrong jwt error
   if (error.name === 'JsonWebTokenError') {
     const message = 'Invalid JWT token. Please try again!';
