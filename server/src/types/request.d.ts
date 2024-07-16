@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { IUser } from './src/types';
+import { IUser } from '.';
 
 declare global {
   namespace Express {

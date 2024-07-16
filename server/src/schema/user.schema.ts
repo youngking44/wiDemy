@@ -47,3 +47,12 @@ export const socialAuthSchema = z.object({
     .optional()
     .nullable(),
 });
+
+export const updatePasswordSchema = z.object({
+  oldPassword: z.string().min(1, 'Old  password is required!'),
+  newPassword: z.string().min(1, 'New  password is required!'),
+});
+
+export const updateProfilePictureSchema = z.object({
+  avatar: z.string().min(1, 'Profile picture is required!'),
+});

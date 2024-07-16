@@ -6,22 +6,29 @@ import morgan from 'morgan';
 import errorHandlerMiddleware from './middleware/error';
 import authRouter from './routes/auth.route';
 import userRouter from './routes/user.route';
+import courseRouter from './routes/course.route';
 import ErrorHandler from './utils/errorHandler.utils';
 
 const app = express();
 
 const corsOptions = {
-  origin: process.env.ORIGIN,
+  origin: 'http://localhost:3001',
   credentials: true,
 };
+// const corsOptions = {
+//   origin: process.env.ORIGIN,
+//   credentials: true,
+// };
 
 app.use(cors(corsOptions));
 app.use(helmet());
 app.use(morgan('dev'));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
+app.use('/api/courses', courseRouter);
 
 app.get('/healthcheck', (req: Request, res: Response) => res.sendStatus(200));
 

@@ -2,14 +2,14 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import config from 'config';
 import { CreateUserType } from '../schema/user.schema';
-import { createUser, loginUser, logoutUser, socialAuth } from '../services/auth.service';
-import { createActivationToken, createToken } from '../utils/token.utils';
 import logger from '../utils/logger.utils';
 import sendMail from '../utils/sendMail.utils';
 import { IActionRequest } from '../types';
 import ErrorHandler from '../utils/errorHandler.utils';
 import { updateUser } from '../services/user.service';
 import { redis } from '../utils/redis.utils';
+import { createActivationToken, createToken } from '../utils/token.utils';
+import { createUser, loginUser, logoutUser, socialAuth } from '../services/auth.service';
 
 const refreshTokenMaxAge = 3 * 24 * 60 * 60 * 1000;
 const accessTokenMaxAge = 15 * 60 * 1000;
@@ -131,7 +131,7 @@ export const updateAccessTokenHandler = async (req: Request, res: Response, next
 
     //You can also check if user with such token exist in the data base, and you can checkout
     // mikeshop codebase for that, but since we are using Redis, there is no need for that
-
+    req.user = JSON.parse(session);
     const payload = { id: decoded._id, role: decoded.role };
     const accessToken = createToken(payload, 'accessToken');
     res.cookie('accessToken', accessToken, { httpOnly: true, sameSite: 'lax', maxAge: accessTokenMaxAge });
