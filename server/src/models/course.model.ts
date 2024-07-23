@@ -4,6 +4,7 @@ const reviewSchema = new Schema({
   user: Object,
   rating: { type: Number, default: 0 },
   comment: String,
+  commentReplies: [Object],
 });
 
 const linkSchema = new Schema({
@@ -13,8 +14,8 @@ const linkSchema = new Schema({
 
 const commentSchema = new Schema({
   user: Object,
-  comment: String,
-  commentReplies: [Object],
+  question: String,
+  questionReplies: [Object],
 });
 
 const courseDataSchema = new Schema({
@@ -42,7 +43,7 @@ const courseSchema = new Schema({
   prerequisites: [{ title: String }],
   reviews: [reviewSchema],
   courseData: [courseDataSchema],
-  rating: { type: Number, default: 0 },
+  ratings: { type: Number, default: 0 },
   purchased: { type: Number, default: 0 },
 });
 

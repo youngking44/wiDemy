@@ -13,7 +13,10 @@ export interface IUser {
   _id: mongoose.Types.ObjectId;
   name: string;
   email: string;
-  avatar?: { public_id: string; url: string };
+  avatar?: {
+    public_id: string;
+    url: string;
+  };
   role: string;
   token: string;
   isVerified: boolean;

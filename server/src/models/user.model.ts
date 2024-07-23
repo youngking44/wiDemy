@@ -6,7 +6,10 @@ const UserSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, trim: true },
-    password: { type: String, minlength: [6, 'Password must be at least six (6) characters'] },
+    password: {
+      type: String,
+      minlength: [6, 'Password must be at least six (6) characters'],
+    },
     avatar: { public_id: String, url: String },
     role: { type: String, default: 'user' },
     token: { type: String, default: '' },
@@ -20,7 +23,7 @@ const UserSchema = new Schema(
   { timestamps: true },
 );
 
-type User = InferSchemaType<typeof UserSchema>;
+export type UserType = InferSchemaType<typeof UserSchema>;
 
 UserSchema.pre('save', async function (next) {
   const user = this;
@@ -36,6 +39,6 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
-const userModel = mongoose.model<User>('User', UserSchema);
+const userModel = mongoose.model<UserType>('User', UserSchema);
 
 export default userModel;

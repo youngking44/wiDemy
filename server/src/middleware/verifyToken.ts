@@ -6,12 +6,19 @@ import logger from '../utils/logger.utils';
 
 const accessTokenSec = config.get<string>('accessToken');
 
-export const verifyToken = async (req: Request, res: Response, next: () => void) => {
+export const verifyToken = async (
+  req: Request,
+  res: Response,
+  next: () => void,
+) => {
   try {
-    const authHeader = req.headers.authorization || (req.headers.Authorization as string);
+    const authHeader =
+      req.headers.authorization || (req.headers.Authorization as string);
 
     if (!authHeader) {
-      return res.status(401).json({ success: false, message: 'Not authenticated' });
+      return res
+        .status(401)
+        .json({ success: false, message: 'Not authenticated' });
     }
 
     const token = authHeader.split(' ')[1];
@@ -24,7 +31,9 @@ export const verifyToken = async (req: Request, res: Response, next: () => void)
     const user = await redis.get(decoded.id);
 
     if (!user) {
-      return res.status(401).json({ success: false, message: 'Not authenticated' });
+      return res
+        .status(401)
+        .json({ success: false, message: 'Not authenticated' });
     }
     req.user = JSON.parse(user);
 
@@ -36,16 +45,26 @@ export const verifyToken = async (req: Request, res: Response, next: () => void)
     }
 
     if (err.name === 'TokenExpiredError') {
-      return res.status(403).json({ success: false, message: 'JWT token has expired. Please try again!' });
+      return res.status(403).json({
+        success: false,
+        message: 'JWT token has expired. Please try again!',
+      });
     }
 
     res.status(500).json({ success: false, message: 'Internal Server error' });
   }
 };
 
-export const verifyTokenAndAuthorization = (req: Request, res: Response, next: NextFunction) => {
+export const verifyTokenAndAuthorization = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   verifyToken(req, res, () => {
-    if (req.user._id.toString() === req.params.id || req.user.role === 'admin') {
+    if (
+      req.user._id.toString() === req.params.id ||
+      req.user.role === 'admin'
+    ) {
       return next();
     }
 
@@ -53,7 +72,11 @@ export const verifyTokenAndAuthorization = (req: Request, res: Response, next: N
   });
 };
 
-export const verifyTokenAndAdmin = (req: Request, res: Response, next: NextFunction) => {
+export const verifyTokenAndAdmin = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   verifyToken(req, res, () => {
     if (req.user.role === 'admin') {
       return next();

@@ -7,6 +7,9 @@ import errorHandlerMiddleware from './middleware/error';
 import authRouter from './routes/auth.route';
 import userRouter from './routes/user.route';
 import courseRouter from './routes/course.route';
+import orderRouter from './routes/order.route';
+import notificationRouter from './routes/notification.route';
+import analyticsRouter from './routes/analytics.route';
 import ErrorHandler from './utils/errorHandler.utils';
 
 const app = express();
@@ -29,6 +32,9 @@ app.use(cookieParser());
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/courses', courseRouter);
+app.use('/api/orders', orderRouter);
+app.use('/api/notifications', notificationRouter);
+app.use('/api/analytics', analyticsRouter);
 
 app.get('/healthcheck', (req: Request, res: Response) => res.sendStatus(200));
 

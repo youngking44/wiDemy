@@ -1,9 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
-import { getUser, updateProfilePicture, updateUser, updateUserPassword } from '../services/user.service';
+import {
+  deleteUser,
+  getAllUsers,
+  getUser,
+  updateProfilePicture,
+  updateUser,
+  updateUserPassword,
+  updateUserRole,
+} from '../services/user.service';
 import logger from '../utils/logger.utils';
 import { IParams } from '../types';
 
-export const getUserHandler = async (req: Request, res: Response, next: NextFunction) => {
+// GET USER HANDLER
+export const getUserHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const { id } = req.params;
   try {
     const user = await getUser(id);
@@ -14,7 +27,27 @@ export const getUserHandler = async (req: Request, res: Response, next: NextFunc
   }
 };
 
-export const updateUserHandler = async (req: Request, res: Response, next: NextFunction) => {
+// GET ALL USERS HANDLER
+export const getAllUsersHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const users = await getAllUsers();
+    res.status(200).json({ success: true, users });
+  } catch (err) {
+    logger.error(err);
+    next(err);
+  }
+};
+
+// UPDATE USER HANDLER
+export const updateUserHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const { id } = req.params;
   try {
     const user = await updateUser(id, req.body);
@@ -25,12 +58,17 @@ export const updateUserHandler = async (req: Request, res: Response, next: NextF
   }
 };
 
+// UPDATE USER PASSWORD HANDLER
 interface IUpdateUserPassword {
   oldPassword: string;
   newPassword: string;
 }
 
-export const updateUserPasswordHandler = async (req: Request<{}, {}, IUpdateUserPassword>, res: Response, next: NextFunction) => {
+export const updateUserPasswordHandler = async (
+  req: Request<{}, {}, IUpdateUserPassword>,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { id } = req.params as IParams;
     const user = await updateUserPassword(id, req.body);
@@ -41,12 +79,57 @@ export const updateUserPasswordHandler = async (req: Request<{}, {}, IUpdateUser
   }
 };
 
-export const updateProfilePictureHandler = async (req: Request, res: Response, next: NextFunction) => {
+// UPDATE PROFILE PICTURE HANDLER
+export const updateProfilePictureHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { id } = req.params;
     const { avatar } = req.body;
     const user = await updateProfilePicture({ id, avatar });
     res.status(200).json({ success: true, user });
+  } catch (err) {
+    logger.error(err);
+    next(err);
+  }
+};
+
+// UPDATE USER ROLE
+type UpdateRoleParamsType = {
+  id: string;
+};
+
+interface IUpdateRoleRequestBody {
+  role: string;
+}
+export const updateUserRoleHandler = async (
+  req: Request<UpdateRoleParamsType, {}, IUpdateRoleRequestBody>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    const { role } = req.body;
+    const user = await updateUserRole({ id, role });
+    res.status(200).json({ success: true, user });
+  } catch (err) {
+    logger.error(err);
+    next(err);
+  }
+};
+
+//DELETE USER HANDLER
+export const deleteUserHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    await deleteUser(id);
+    res.sendStatus(204);
   } catch (err) {
     logger.error(err);
     next(err);

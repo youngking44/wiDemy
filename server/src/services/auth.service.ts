@@ -43,7 +43,11 @@ export const loginUser = async (input: ILogin) => {
 };
 
 export const logoutUser = async (id: string) => {
-  const user = await User.findByIdAndUpdate(id, { $set: { token: '' } }, { new: true });
+  const user = await User.findByIdAndUpdate(
+    id,
+    { $set: { token: '' } },
+    { new: true },
+  );
 
   if (!user) {
     throw new ErrorHandler('User ID does not exist', 404);
