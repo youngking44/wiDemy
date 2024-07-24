@@ -70,7 +70,7 @@ export const getSingleCourse = async (id: string) => {
     throw new ErrorHandler('Course not found!', 404);
   }
 
-  await redis.set(id, JSON.stringify(course));
+  await redis.set(id, JSON.stringify(course), 'EX', 604800);
 
   return course;
 };

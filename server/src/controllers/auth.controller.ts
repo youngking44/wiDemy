@@ -170,8 +170,10 @@ export const updateAccessTokenHandler = async (
     //You can also check if user with such token exist in the database, and you can checkout
     // mikeshop codebase for that, but since we are using Redis, there is no need for that
     req.user = JSON.parse(session);
-    const payload = { id: decoded._id, role: decoded.role };
+    const payload = { id: decoded.id, role: decoded.role };
     const accessToken = createToken(payload, 'accessToken');
+
+    await redis.set(decoded.id, session, 'EX', 604800);
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
       sameSite: 'lax',
