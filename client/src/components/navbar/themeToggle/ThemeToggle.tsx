@@ -18,14 +18,10 @@ const ThemeToggle = () => {
 
   return (
     <div
-      className="cursor-pointer"
+      className="text-white cursor-pointer"
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
     >
-      {theme === "light" ? (
-        <BiMoon fill="black" size={25} />
-      ) : (
-        <BiSun size={25} />
-      )}
+      {theme === "light" ? <BiMoon size={25} /> : <BiSun size={25} />}
     </div>
   );
 };

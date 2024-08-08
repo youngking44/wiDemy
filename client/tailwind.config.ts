@@ -17,13 +17,19 @@ const config: Config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 100deg at 50% 50%, var(--tw-gradient-stops))",
+        hero: "url(/assets/hero.jpg)",
       },
-      screens: {
-        sm: "576px",
-        md: "768px",
-        lg: "992px",
-        xl: "1200px",
+      colors: {
+        accent: {
+          500: "var(--accent-500)",
+        },
       },
+    },
+    screens: {
+      sm: "576px",
+      md: "768px",
+      lg: "992px",
+      xl: "1200px",
     },
   },
   plugins: [],

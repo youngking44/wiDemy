@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --accent-500: #ff3115;
+}
+
 .hero_animation {
   background-image: linear-gradient(
     147.92deg,
