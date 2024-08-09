@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 :root {
+  --secondary-500: #212529;
+  --secondary-400: #212121;
   --accent-500: #ff3115;
 }
 

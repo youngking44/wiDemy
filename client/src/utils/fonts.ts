@@ -1,9 +1,9 @@
-import { Poppins, Josefin_Sans } from "next/font/google";
+import { Josefin_Sans, Roboto } from "next/font/google";
 
-export const poppins = Poppins({
+export const roboto = Roboto({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-Poppins",
+  weight: ["400", "500", "700"],
+  variable: "--font-roboto",
 });
 
 export const josefin = Josefin_Sans({

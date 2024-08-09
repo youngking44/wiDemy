@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        Poppins: ["var(--font-Poppins)"],
+        roboto: ["var(--font-roboto)"],
         Josefin: ["var(--font-Josefin)"],
       },
       backgroundImage: {
@@ -20,6 +20,10 @@ const config: Config = {
         hero: "url(/assets/hero.jpg)",
       },
       colors: {
+        secondary: {
+          500: "var(--secondary-500)",
+          400: "var(--secondary-400)",
+        },
         accent: {
           500: "var(--accent-500)",
         },

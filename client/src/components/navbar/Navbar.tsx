@@ -44,7 +44,7 @@ const Navbar = () => {
     <header className="w-full">
       <TopSocialMedia />
       <TopContact />
-      <div className="w-full py-2 shadow-md text-white bg-[#212121]">
+      <div className="w-full py-2 shadow-md text-white bg-secondary-500">
         <Container>
           <div className="flex justify-between items-center">
             <div className="text-[25px] font-bold">
@@ -76,7 +76,7 @@ const Navbar = () => {
                     <li
                       key={link.id}
                       onClick={() => setOpen(false)}
-                      className="font-[500] transition-all duration-300 hover:text-[crimson] dark:hover:text-[#37a29a]"
+                      className="font-[500] transition-all duration-300 hover:text-accent-500"
                     >
                       <Link href={link.path}>{link.title}</Link>
                     </li>
